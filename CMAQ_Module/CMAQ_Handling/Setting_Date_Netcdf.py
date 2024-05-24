@@ -1,7 +1,3 @@
-##############################
-# 10. Setting_Date_Netcdf.py #
-##############################
-
 import os
 import subprocess
 
