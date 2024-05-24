@@ -120,13 +120,13 @@ list_Value_Substance = {
 
 
 ### READING ###
-path_tiff_files = "D:/Emission_PhuYen/CAMS_GLOB_AIR_TIFF/"
+path_tiff_files = "D:/Emission/CAMS_GLOB_AIR_TIFF/"
 arcpy.env.overwriteOutput = True
 arcpy.env.workspace = path_tiff_files
 rasters = arcpy.ListRasters("*", "ALL")
 for raster in rasters:
     print(raster)
-output_folder_Air = "D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/RV/"
+output_folder_Air = "D:/Emission/CAMS_GLOB_AIR_EXCEL/RV/"
 create_directory_if_not_exists(output_folder_Air)
 arcpy.env.workspace = output_folder_Air
 for raster in rasters:
@@ -178,7 +178,7 @@ for raster in tqdm(rasters, desc="Processing files", total=total_iterations):
         for times in range(7):
             value_substance = value_substance_x
             day, month, year = int(date[2:4])+times, int(date[0:2]), int(date[4:8])
-            value_Temporal_Month = pd.read_excel('D:/Emission/Excel/Temporal-Emission_PhuYens.xlsx', sheet_name = f'fd-{date[0:2]}18-EDGAR')
+            value_Temporal_Month = pd.read_excel('D:/Emission/Excel/Temporal-Emission.xlsx', sheet_name = f'fd-{date[0:2]}18-EDGAR')
             day_weekday = string_Day[datetime.date(year, month, day).weekday()]
             sector = "TRO" + '-' + "tro"
             index, value_Sector = 0, []
@@ -218,8 +218,8 @@ for raster in tqdm(rasters, desc="Processing files", total=total_iterations):
                     value_Hour.append(value_Layer_Const[index]*value_Sector[datetime.date(year, month, day).weekday()]*value[hour]*7/30)
                 globals()[f"df_Value_Day_{day}"].loc[index] = value_Hour
             
-        excel_file_path_df = f"D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/DF/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
-        excel_file_path_cb = f"D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/CB/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
+        excel_file_path_df = f"D:/Emission/CAMS_GLOB_AIR_EXCEL/DF/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
+        excel_file_path_cb = f"D:/Emission/CAMS_GLOB_AIR_EXCEL/CB/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
         # DF --> DataFrames  # CB --> Combines (You can actually delete the DataFrames but do not delete Combines if you haven't run the Sum_Up_Convert_Result.py)
         create_directory_if_not_exists(excel_file_path_df)
         create_directory_if_not_exists(excel_file_path_cb)
@@ -258,14 +258,18 @@ for raster in tqdm(rasters, desc="Processing files", total=total_iterations):
                 globals()[f"value_{hour}"] = globals()[f"value_{hour%7}"]
                 globals()[f"value_{hour}"]['Day'] = hour
             # print(hour, globals()[f"value_{hour}"])
-        for index_value_lon_lat in range(globals()[f"df_Value_Day_{i}"]['LON']):
-            lon_value = globals()[f"df_Value_Day_{i}"]['LON'][index_value_lon_lat]
-            lat_value = globals()[f"df_Value_Day_{i}"]['LAT'][index_value_lon_lat]
-            value = 0
-            for index in range(1, 32, 1):
-                for hour in range(1, 25, 1):
-                    value = value + globals()[f"value_{index}"]
-
+        with pd.ExcelWriter(excel_file_path_df) as excel_writer:
+            for hour in range(1, 32, 1):
+                globals()[f"df_Value_Day_{hour}"].to_excel(excel_writer, sheet_name = f"Day_{hour}", index=False)
+            
+        with pd.ExcelWriter(excel_file_path_cb) as excel_writer:
+            for hour in range(1, 32, 1):
+                print(hour)
+                globals()[f"value_{hour}"]['Day'] = hour
+                print(hour, globals()[f"value_{hour}"])
+                globals()[f"value_{hour}"].to_excel(excel_writer, sheet_name = f"Day_{hour}", index=False, header=False)
+        print("DataFrame saved to Excel file:", excel_file_path_df)
+        print("Combining Hour saved to Excel file:", excel_file_path_cb)
         print('-'*75)
 
 print("Successfully Executing Code!!!")
