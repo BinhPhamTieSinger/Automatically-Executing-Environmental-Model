@@ -26,41 +26,11 @@ def create_directory_if_not_exists(directory_path):
     else:
         print(f"Directory '{directory_path}' already exists.")
 
-value_Substances = pd.read_excel('D:/Emission/Excel/Tutorial/Buoc2_HN_new.xls', sheet_name = '(3)')
-value_Day_Sector = pd.read_excel('D:/Emission/Excel/Tutorial/Buoc2_HN_new.xls', sheet_name = '(1)')
 
 ### INITIALIZATION ###
-path_Netcdf_Ant = "F:/Emission/CAMS_GLOB_ANT_NETCDF/"
-data_Ant_acetylene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_acetylene_v5.3_monthly_2023.nc"
-data_Ant_alcohols = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_alcohols_v5.3_monthly_2023.nc"
-data_Ant_bc = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_bc_v5.3_monthly_2023.nc"
-data_Ant_benzene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_benzene_v5.3_monthly_2023.nc"
-data_Ant_butanes = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_butanes_v5.3_monthly_2023.nc"
-data_Ant_ch4 = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_ch4_v5.3_monthly_2023.nc"
-data_Ant_co = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_co_v5.3_monthly_2023.nc"
-data_Ant_co2_excl_short_cycle_org_C = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_co2_excl_short-cycle_org_C_v5.3_monthly_2023.nc"
-data_Ant_co2_short_cycle_org_C = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_co2_short-cycle_org_C_v5.3_monthly_2023.nc"
-data_Ant_ethene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_ethene_v5.3_monthly_2023.nc"
-data_Ant_ethane = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_ethane_v5.3_monthly_2023.nc"
-data_Ant_formaldehyde = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_formaldehyde_v5.3_monthly_2023.nc"
-data_Ant_hexanes = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_hexanes_v5.3_monthly_2023.nc"
-data_Ant_isoprene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_isoprene_v5.3_monthly_2023.nc"
-data_Ant_monoterpenes = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_monoterpenes_v5.3_monthly_2023.nc"
-data_Ant_n2o = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_n2o_v5.3_monthly_2023.nc"
-data_Ant_nh3 = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_nh3_v5.3_monthly_2023.nc"
-data_Ant_nmvocs = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_nmvocs_v5.3_monthly_2023.nc"
-data_Ant_nox = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_nox_v5.3_monthly_2023.nc"
-data_Ant_oc = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_oc_v5.3_monthly_2023.nc"
-data_Ant_other_aldehydes = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_other-aldehydes_v5.3_monthly_2023.nc"
-data_Ant_other_alkenes_and_alkynes = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_other-alkenes-and-alkynes_v5.3_monthly_2023.nc"
-data_Ant_other_aromatics = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_other-aromatics_v5.3_monthly_2023.nc"
-data_Ant_other_vocs = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_other-vocs_v5.3_monthly_2023.nc"
-data_Ant_propane = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_propane_v5.3_monthly_2023.nc"
-data_Ant_propene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_propene_v5.3_monthly_2023.nc"
-data_Ant_so2 = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_so2_v5.3_monthly_2023.nc"
-data_Ant_toluene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_toluene_v5.3_monthly_2023.nc"
-data_Ant_total_ketones = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_total-ketones_v5.3_monthly_2023.nc"
-data_Ant_xylene = path_Netcdf_Ant + "CAMS-GLOB-ANT_Glb_0.1x0.1_anthro_xylene_v5.3_monthly_2023.nc"
+
+value_Substances = pd.read_excel('D:/Emission/Excel/Tutorial.xls', sheet_name = '(3)')
+value_Day_Sector = pd.read_excel('D:/Emission/Excel/Tutorial.xls', sheet_name = '(1)')
 # variable_Ant = ['ene', 'ind', 'tro', 'res', 'agl', 'awb', 'ags', 'swd', 'shp', 'fef', 'slv']
 variable_Ant = ['tro', 'agl', 'ags', 'swd', 'slv']
 substance_Ant = ["acetylene", "alcohols", "bc", "benzene", "butanes", "co", "co2_excl_short_cycle_org_C", "co2_short_cycle_org_C",
@@ -163,13 +133,6 @@ list_Value_Substance = {
 ### READING ###
 
 path_tiff_files = "D:/Emission/CAMS_GLOB_ANT_TIFF/"
-raw_name = os.listdir(path_tiff_files)
-outnames = []
-for rname in raw_name:
-    portion = os.path.splitext(rname)
-    temp_name = portion[0] + '.tif'
-    outnames.append(temp_name)
-
 arcpy.env.overwriteOutput = True
 arcpy.env.workspace = path_tiff_files
 rasters = arcpy.ListRasters("*", "ALL")
@@ -177,6 +140,7 @@ for raster in rasters:
     print(raster)
 
 output_folder_Ant = "D:/Emission/CAMS_GLOB_ANT_EXCEL/RV/"
+create_directory_if_not_exists(output_folder_Ant)
 arcpy.env.workspace = output_folder_Ant
 for raster in rasters:
     parts = raster.split('_')
