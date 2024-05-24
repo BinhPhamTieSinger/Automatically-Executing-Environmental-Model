@@ -11,3 +11,5 @@ There are five modules in this repository:
 - Creating EMC Report as a format in EMC.docx
 
 - Creating videos from PM2.5 and Meteorology
+
+Required: ArcGis Pro Version 3 or above
