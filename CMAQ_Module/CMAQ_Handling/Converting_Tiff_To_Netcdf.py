@@ -1,7 +1,3 @@
-###################################
-# 9. Converting_Tiff_To_Netcdf.py #
-###################################
-
 import rasterio
 from arcpy import *
 from arcpy import conversion
@@ -25,6 +21,3 @@ for raw_name in raw_names:
         tif_input = path_tiff_files + raw_name[0:i] + '.tif'
         nc_output = output_folder + raw_name[0:i] + ".nc"
         subprocess.run(["gdal_translate", "-of", "netCDF", "-co", "FORMAT=NC4", tif_input, nc_output], check=True)
-
-
-# Then open the cygwin and run the cdo cat *.nc output.nc to merge these files
