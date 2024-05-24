@@ -1,8 +1,3 @@
-#########################
-# 1. Converting File.py #
-#########################
-
-
 import xarray as xr
 import rioxarray as rio
 from rasterio.transform import from_origin
