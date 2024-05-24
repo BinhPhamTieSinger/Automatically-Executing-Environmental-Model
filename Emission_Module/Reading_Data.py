@@ -118,8 +118,15 @@ time_Data_Ant = ["01/01/2023 12:00:00 AM"] # Time Dimension for extracting to Ge
 time_Data_Bio = ["01/01/2022 12:00:00 AM"] # Time Dimension for extracting to GeoTIFF File*
 
 
-output_folder_Air = "F:/Emission/CAMS_GLOB_AIR_TIFF/"
+
+output_folder_Air = "D:/Emission/CAMS_GLOB_AIR_TIFF/" # Output of GeoTIFF Files*
+output_folder_Ant = "D:/Emission/CAMS_GLOB_ANT_TIFF/" # Output of GeoTIFF Files*
+output_folder_Bio = "D:/Emission/CAMS_GLOB_BIO_TIFF/" # Output of GeoTIFF Files*
 create_directory_if_not_exists(output_folder_Air)
+create_directory_if_not_exists(output_folder_Ant)
+create_directory_if_not_exists(output_folder_Bio)
+
+
 for substance in substance_Air:
     for time in time_Data_Air:
         ds_Air = xr.open_dataset(globals().get(f"data_Air_{substance}", 0))
@@ -132,8 +139,6 @@ for substance in substance_Air:
                                                 "lon", "lat", out_raster_layer, dimension_values=[("time", time)])
                 arcpy.CopyRaster_management(out_raster_layer, out_raster_path)
 
-output_folder_Ant = "F:/Emission/CAMS_GLOB_ANT_TIFF/"
-create_directory_if_not_exists(output_folder_Ant)
 for substance in substance_Ant:
     for time in time_Data_Ant:
         ds_Ant = xr.open_dataset(globals().get(f"data_Ant_{substance}", 0))
@@ -146,8 +151,6 @@ for substance in substance_Ant:
                                                 "lon", "lat", out_raster_layer, dimension_values=[("time", time)])
                 arcpy.CopyRaster_management(out_raster_layer, out_raster_path)
         
-output_folder_Bio = "F:/Emission/CAMS_GLOB_BIO_TIFF/"
-create_directory_if_not_exists(output_folder_Bio)
 for substance in substance_Bio:
     for time in time_Data_Bio:
         ds_Bio = xr.open_dataset(globals().get(f"data_Bio_{substance}", 0))
