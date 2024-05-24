@@ -1,7 +1,3 @@
-################################
-# 2. Read_Extract_Calculate.py #
-################################
-
 import os
 from arcpy import *
 from arcpy import env
