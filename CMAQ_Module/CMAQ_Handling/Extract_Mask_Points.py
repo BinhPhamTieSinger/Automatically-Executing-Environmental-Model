@@ -1,7 +1,3 @@
-#############################
-# 3. Extract_Mask_Points.py #
-#############################
-
 import os
 from arcpy import *
 from arcpy import env
