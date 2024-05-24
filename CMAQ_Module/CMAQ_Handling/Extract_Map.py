@@ -1,7 +1,3 @@
-#####################
-# 5. Extract_Map.py #
-#####################
-
 import os
 import arcpy
 from arcpy import env 
