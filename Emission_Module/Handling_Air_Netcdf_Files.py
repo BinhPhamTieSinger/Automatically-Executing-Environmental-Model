@@ -1,7 +1,7 @@
 ######################################################################
 # Note: In this section there is many required:                      #
 # - The tutorial about how to transfer from 1 month to another       #
-# and the value for each sector and substance: Tutorial.xls          #
+# and the value for each sector and substance: Excel/Tutorial.xls    #
 # (If you need Tutorial.xls you can download in the folder)          #
 # - The mask (point shapefile) for extracting value to points        #
 ######################################################################
@@ -27,12 +27,12 @@ def create_directory_if_not_exists(directory_path):
         print(f"Directory '{directory_path}' already exists.")
 
 ### INITIALIZATION ###
-value_Substances = pd.read_excel('D:/Emission/Tutorial.xls', sheet_name = '(3)')
-value_Day_Sector = pd.read_excel('D:/Emission/Tutorial.xls', sheet_name = '(1)')
+value_Substances = pd.read_excel('D:/Emission/Excel/Tutorial.xls', sheet_name = '(3)')
+value_Day_Sector = pd.read_excel('D:/Emission/Excel/Tutorial.xls', sheet_name = '(1)')
 substance_Air = ["acetylene", "alcohols", "bc", "benzene", "co", "co2", "ethane", "ethene", "formaldehyde",
                  "hexanes", "ketones", "nh3", "nmvocs", "nox", "oc", "other_aldehydes", "other_alkenes_and_alkynes",
                  "other_aromatics", "propane", "propene", "so2", "toluene", "xylene"] # Substances in Air Module
-time_Data_excel_2023 = ['01012023']; time_Data_2023 = ["01/01/2023 12:00:00 AM"]; variable_Air = ['avi']; area_Cell = 9000000
+time_Data_excel_Air = ['01012023']; variable_Air = ['avi']; area_Cell = 9000000
 ### Setting Time Dimension, Variable and Area of Cell
 print(value_Substances)
 print(value_Day_Sector)
@@ -40,7 +40,7 @@ print(value_Day_Sector)
 string_Day = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật']; coordinate = ['LON', 'LAT']
 hour_Day = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'h11', 'h12', 'h13',
             'h14', 'h15', 'h16', 'h17', 'h18', 'h19', 'h20', 'h21', 'h22', 'h23', 'h24']
-mask = "F:/CMAQ_WRF_HaNoi/Point_ShapeFile/Point_Determination.shp"
+mask = "D:/Emission/Point_ShapeFile/Point_Determination.shp"
 # This mask required for extracting Values from GeoTIFF files to Points
 # This mask and the GeoTIFF files have to be in the same coordinate
 lat_value, lon_value = [], []
@@ -120,13 +120,13 @@ list_Value_Substance = {
 
 
 ### READING ###
-path_tiff_files = "F:/Emission_PhuYen/CAMS_GLOB_AIR_TIFF/"
+path_tiff_files = "D:/Emission_PhuYen/CAMS_GLOB_AIR_TIFF/"
 arcpy.env.overwriteOutput = True
 arcpy.env.workspace = path_tiff_files
 rasters = arcpy.ListRasters("*", "ALL")
 for raster in rasters:
     print(raster)
-output_folder_Air = "F:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/RV/"
+output_folder_Air = "D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/RV/"
 create_directory_if_not_exists(output_folder_Air)
 arcpy.env.workspace = output_folder_Air
 for raster in rasters:
@@ -146,7 +146,7 @@ for raster in rasters:
 df_Air = pd.DataFrame()
 
 for variable in variable_Air:
-    for time_df in time_Data_excel_2023:
+    for time_df in time_Data_excel_Air:
         for substance in substance_Air:
             df_Excel = pd.read_excel(output_folder_Air + f"value_{substance}_{variable}_{time_df}.xlsx")
             df_Air["LON"], df_Air["LAT"] = df_Excel["lon"], df_Excel["lat"]
@@ -178,7 +178,7 @@ for raster in tqdm(rasters, desc="Processing files", total=total_iterations):
         for times in range(7):
             value_substance = value_substance_x
             day, month, year = int(date[2:4])+times, int(date[0:2]), int(date[4:8])
-            value_Temporal_Month = pd.read_excel('F:/CMAQ_WRF_HaNoi/Tutorial/Temporal-Emission_PhuYens.xlsx', sheet_name = f'fd-{date[0:2]}18-EDGAR')
+            value_Temporal_Month = pd.read_excel('D:/Emission/Excel/Temporal-Emission_PhuYens.xlsx', sheet_name = f'fd-{date[0:2]}18-EDGAR')
             day_weekday = string_Day[datetime.date(year, month, day).weekday()]
             sector = "TRO" + '-' + "tro"
             index, value_Sector = 0, []
@@ -218,9 +218,11 @@ for raster in tqdm(rasters, desc="Processing files", total=total_iterations):
                     value_Hour.append(value_Layer_Const[index]*value_Sector[datetime.date(year, month, day).weekday()]*value[hour]*7/30)
                 globals()[f"df_Value_Day_{day}"].loc[index] = value_Hour
             
-        excel_file_path_df = f"F:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/DF/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
-        excel_file_path_cb = f"F:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/CB/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
+        excel_file_path_df = f"D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/DF/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
+        excel_file_path_cb = f"D:/Emission_PhuYen/CAMS_GLOB_AIR_EXCEL/CB/{occupation}_{value_substance_x}_{sector_x}_{int(date[0:2])}_{substance}.xlsx"
         # DF --> DataFrames  # CB --> Combines (You can actually delete the DataFrames but do not delete Combines if you haven't run the Sum_Up_Convert_Result.py)
+        create_directory_if_not_exists(excel_file_path_df)
+        create_directory_if_not_exists(excel_file_path_cb)
       
         # Save the DataFrame to Excel
         for i in range(1, 8, 1):
