@@ -1,0 +1,11 @@
+** Oregon **
+(63, 30) --> Oakridge_Willamett
+(70, 30) --> Hillsboro_Hare_Fie
+(70, 34) --> Hood_River_West_Side
+(68, 30) --> Silverton
+(69, 31) --> Portland_Spanger
+
+lon_min = -124.85
+lon_max = -116.4
+lat_min = 41.9
+lat_max = 46.3
